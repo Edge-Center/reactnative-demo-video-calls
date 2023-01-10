@@ -5,7 +5,7 @@ yarn install
 ​
 ## Running on iOS Device
 * Open the project MyExample/ios/MyExample.xcworkspace in Xcode
-* Ensure that in pod Pods/react_native_awesome_module ```Build Phases -> Link Binary With Library``` contains the GCoreVideoCallsSDK framework.
+* Ensure that in pod Pods/react_native_awesome_module ```Build Phases -> Link Binary With Library``` contains the EdgeCenterVideoCallsSDK framework.
 * Select your device in Xcode and press "Build and run"
   ​
 ## Running on Android Device
@@ -20,26 +20,26 @@ yarn install
 Place SDK in your project.<br/>
 Change settings.gradle file (located in android directory of your main project) with following code for include projects:
 ```gradle
-include ':GCoreVideoCallsSDK'
-project(':GCoreVideoCallsSDK').projectDir = new File(rootProject.projectDir, '/path/to/SDK/folder')
+include ':EdgeCenterVideoCallsSDK'
+project(':EdgeCenterVideoCallsSDK').projectDir = new File(rootProject.projectDir, '/path/to/SDK/folder')
 ```
 Add dependency to your build.gradle (located in android directory located in root of your project)
 ```gradle
 implementation 'com.twilio:audioswitch:1.1.5'
 implementation "io.github.crow-misia.libmediasoup-android:libmediasoup-android:0.10.0"
-implementation project(":GCoreVideoCallsSDK")
+implementation project(":EdgeCenterVideoCallsSDK")
 ```
 #### Implementation native module
 Create native module by [official react-native docs](https://reactnative.dev/docs/native-modules-android) <br/>
 In that module you have to implement functions that you want to use from SDK in your JS application
 <br/>
-First step to use SDK is `GCoreMeet.instance.init` function
+First step to use SDK is `ECSession.instance.init` function
 <br/>
 Init SDK function from our example application:
 ```kotlin
   init {
     runOnUiThread {
-      GCoreMeet.instance.init(application)
+      ECSession.instance.init(application)
     }
   }
 ```
@@ -49,7 +49,7 @@ class MyAppPackage(private val application: Application) : ReactPackage {
     //...
   override fun createNativeModules(
     reactContext: ReactApplicationContext
-  ): MutableList<NativeModule> = listOf(GCMeetService(reactContext, application)).toMutableList()
+  ): MutableList<NativeModule> = listOf(ECVideoCallsService(reactContext, application)).toMutableList()
 }
 ```
 And pass `application` to your package from your `MainApplication` (located in android directory of your main project):
@@ -70,7 +70,7 @@ public class MainApplication extends Application implements ReactApplication {
 }
 ```
 
-For join to a room you have to set some required parameters to `GCoreMeet.instance.setConnectionParams` and then call `GCoreMeet.instance.connect(reactContext)`
+For join to a room you have to set some required parameters to `ECSession.instance.setConnectionParams` and then call `ECSession.instance.connect(reactContext)`
 <br/>
 Join user to room function from our example application:
 
@@ -98,12 +98,12 @@ Join user to room function from our example application:
         startWithMic = options.getBoolean("isAudioOn")
       )
 
-      GCoreMeet.instance.setConnectionParams(userInfo, roomParams)
-      GCoreMeet.instance.connect(reactContext)
+      ECSession.instance.setConnectionParams(userInfo, roomParams)
+      ECSession.instance.connect(reactContext)
     }
   }
 ```
-Make sure that SDK functions `GCoreMeet.instance.init` and `GCoreMeet.instance.connect` running in UI Thread
+Make sure that SDK functions `ECSession.instance.init` and `ECSession.instance.connect` running in UI Thread
 <br/>
 
 You have to use view components from SDK in your react-native application
@@ -142,7 +142,7 @@ class GCRemoteViewManager(var mCallerContext: ReactApplicationContext) :
   override fun createViewInstance(reactContext: ThemedReactContext): RemoteUserVideoView {
     val view = RemoteUserVideoView(reactContext.baseContext)
 
-    GCoreMeet.instance.roomState.remoteUsers.observeForever { remoteUsers ->
+    ECSession.instance.roomState.remoteUsers.observeForever { remoteUsers ->
       remoteUsers?.list?.let { users ->
         if (users.isNotEmpty()) {
           LLog.d("ReactRemoteViewManager", "connect remote user: ${users[0].id}")
@@ -156,7 +156,7 @@ class GCRemoteViewManager(var mCallerContext: ReactApplicationContext) :
 ```
 You have to call function `connect` for `RemoteUserVideoView` and pass `userId` into
 <br>
-You can get `userId` from `GCoreMeet.instance.roomState.remoteUsers` by example above
+You can get `userId` from `ECSession.instance.roomState.remoteUsers` by example above
 
 Add permissions in `AndroidManifest.xml`
 ```xml
@@ -180,23 +180,23 @@ Add permissions in `AndroidManifest.xml`
 Create native module by [official react-native docs](https://reactnative.dev/docs/native-modules-ios) <br/>
 In that module you have to implement functions that you want to use from SDK in your JS application
 <br/>
-For join to a room you have to set some required parameters to `GCoreMeet.shared.connectionParams` and then call `GCoreMeet.shared.startConnection()`
+For join to a room you have to set some required parameters to `ECSession.shared.connectionParams` and then call `ECSession.shared.startConnection()`
 <br/>
 Join user to room function from our example application:
 
 ```swift
-    private var client = GCoreMeet.shared
+    private var client = ECSession.shared
     private var joinOptions: ConnectionOptions!
 
     private var isConnectedOpponent = false
 
     @objc
     func openConnection(_ options: NSDictionary) {
-        GCoreRoomLogger.activateLogger()
+        ECRoomLogger.activateLogger()
 
-        client.cameraParams = GCoreCameraParams(cameraPosition: .front)
+        client.cameraParams = ECCameraParams(cameraPosition: .front)
 
-        var userRole: GCoreUserRole
+        var userRole: ECUserRole
         if let role = options["role"]  {
             switch role as! String {
             case "common": userRole = .common
@@ -207,11 +207,11 @@ Join user to room function from our example application:
             userRole = .unknown
         }
 
-        let localUserParams = GCoreLocalUserParams(
+        let localUserParams = ECLocalUserParams(
             name: options["displayName"] as! String,
             role: userRole)
 
-        let roomParams = GCoreRoomParams(
+        let roomParams = ECRoomParams(
             id: options["roomId"] as! String,
             host: options["clientHostName"] as? String)
 
@@ -231,9 +231,9 @@ Join user to room function from our example application:
 
 Implement roomListener if you want to have some callbacks:
 ```swift
-extension GCMeetService: GCoreRoomListener {
+extension ECVideoCallsService: ECRoomListener {
     //...
-    func roomClientHandle(_ client: GCoreRoomClient, mediaEvent: GCoreMediaEvent) {
+    func roomClientHandle(_ client: ECRoomClient, mediaEvent: ECMediaEvent) {
         switch mediaEvent {
 
         case .produceLocalVideo(track: let track):
@@ -302,7 +302,7 @@ Example usage openConnection function from native module to join to room:
 ```ts
     import { NativeModules } from 'react-native';
     // ...
-    NativeModules.GCMeetService.openConnection({
+    NativeModules.ECVideoCallsService.openConnection({
             roomId: 'serv1234',
             displayName: 'Client from react native',
             isAudioOn: true,

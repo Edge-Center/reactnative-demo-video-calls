@@ -10,7 +10,7 @@ export const getAndroidBluetoothConnectPermission = async () => {
 
 export const getCameraPermission = async () => {
   if (Platform.OS === 'ios') {
-    return await NativeModules.GCMeetPermissions.authorizeForVideo();
+    return await NativeModules.ECVideoCallsPermissions.authorizeForVideo();
   } else {
     return (
       (await PermissionsAndroid.request(
@@ -22,7 +22,7 @@ export const getCameraPermission = async () => {
 
 export const getMicPermission = async () => {
   if (Platform.OS === 'ios') {
-    return await NativeModules.GCMeetPermissions.authorizeForAudio();
+    return await NativeModules.ECVideoCallsPermissions.authorizeForAudio();
   } else {
     return (
       (await PermissionsAndroid.request(
@@ -34,7 +34,7 @@ export const getMicPermission = async () => {
 
 export const isGrantedForVideo = async () => {
   if (Platform.OS === 'ios') {
-    return NativeModules.GCMeetPermissions.getConstants()
+    return NativeModules.ECVideoCallsPermissions.getConstants()
       .isGrantedForVideo as boolean;
   } else {
     return (await PermissionsAndroid.check(
@@ -45,7 +45,7 @@ export const isGrantedForVideo = async () => {
 
 export const isGrantedForAudio = async () => {
   if (Platform.OS === 'ios') {
-    return NativeModules.GCMeetPermissions.getConstants()
+    return NativeModules.ECVideoCallsPermissions.getConstants()
       .isGrantedForAudio as boolean;
   } else {
     return (await PermissionsAndroid.check(
