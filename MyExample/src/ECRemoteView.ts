@@ -4,5 +4,5 @@ import type { PropsWithChildren } from 'react';
 interface ViewProps extends PropsWithChildren<any> {
   style: StyleProp<ViewStyle>;
 }
-const GCLocalView = requireNativeComponent<ViewProps>('GCLocalView');
-export default GCLocalView;
+const ECRemoteView = requireNativeComponent<ViewProps>('ECRemoteView');
+export default ECRemoteView;
