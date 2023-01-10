@@ -4,8 +4,8 @@ import React, {useEffect, useState} from 'react';
 import {Dimensions, NativeModules, Pressable, StyleSheet, View} from 'react-native';
 
 import {withAnchorPoint} from 'react-native-anchor-point';
-import GCRemoteView from './GCRemoteView';
-import GCLocalView from './GCLocalView';
+import ECRemoteView from './ECRemoteView';
+import ECLocalView from './ECLocalView';
 
 import {CameraIcon, DropIcon, MicrophoneIcon, SwitchCameraIcon} from './Icons';
 import type {RootStackParamList} from './types';
@@ -35,7 +35,7 @@ export const RoomScreen = ({ route, navigation }: NativeStackScreenProps<RootSta
   }, []);
 
   const disconnect = () => {
-    NativeModules.GCMeetService.closeConnection();
+    NativeModules.ECVideoCallsService.closeConnection();
     navigation.navigate('Home');
   };
 
@@ -44,9 +44,9 @@ export const RoomScreen = ({ route, navigation }: NativeStackScreenProps<RootSta
     if (result) {
       const newValue = !isVideoOn;
       if (newValue) {
-        NativeModules.GCMeetService.enableVideo();
+        NativeModules.ECVideoCallsService.enableVideo();
       } else {
-        NativeModules.GCMeetService.disableVideo();
+        NativeModules.ECVideoCallsService.disableVideo();
       }
       onChangeVideo(newValue);
     }
@@ -57,16 +57,16 @@ export const RoomScreen = ({ route, navigation }: NativeStackScreenProps<RootSta
     if (result) {
       const newValue = !isAudioOn;
       if (newValue) {
-        NativeModules.GCMeetService.enableAudio();
+        NativeModules.ECVideoCallsService.enableAudio();
       } else {
-        NativeModules.GCMeetService.disableAudio();
+        NativeModules.ECVideoCallsService.disableAudio();
       }
       onChangeAudio(newValue);
     }
   };
 
   const switchCamera = () => {
-    NativeModules.GCMeetService.flipCamera();
+    NativeModules.ECVideoCallsService.flipCamera();
   };
 
   return (
@@ -74,7 +74,7 @@ export const RoomScreen = ({ route, navigation }: NativeStackScreenProps<RootSta
       <View style={styles.container}>
         <View>
           <View style={[styles.previewWrapper]}>
-            <GCLocalView style={[styles.mirror, styles.preview]}/>
+            <ECLocalView style={[styles.mirror, styles.preview]}/>
           </View>
 
           <View style={styles.toolbar}>
@@ -97,7 +97,7 @@ export const RoomScreen = ({ route, navigation }: NativeStackScreenProps<RootSta
           </View>
         </View>
       </View>
-      <GCRemoteView style={[styles.remote, getTransform()]}/>
+      <ECRemoteView style={[styles.remote, getTransform()]}/>
     </View>
   );
 };

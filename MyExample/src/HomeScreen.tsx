@@ -79,11 +79,11 @@ export const HomeScreen = ({
       isAudioOn,
       isVideoOn,
       clientHostName,
-      role: 'common',
+      role: 'participant',
       blurSigma: 35,
     };
 
-    NativeModules.GCMeetService.openConnection({
+    NativeModules.ECVideoCallsService.openConnection({
       ...options,
       clientHostName: prepareClientHostName(options.clientHostName),
     });
