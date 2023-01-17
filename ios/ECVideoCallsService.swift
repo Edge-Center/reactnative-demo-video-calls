@@ -48,7 +48,10 @@ class ECVideoCallsService: RCTEventEmitter {
             role: userRole)
 
         let roomParams = ECRoomParams(
-            id: options["roomId"] as! String)
+            id: options["roomId"] as! String,
+            isWebinar: true
+            // apiEvent: "https://my.domen/webhook"
+        )
            // host: options["clientHostName"] as? String)
 
         client.connectionParams = (localUserParams, roomParams)
