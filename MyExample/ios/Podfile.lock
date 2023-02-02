@@ -2,7 +2,7 @@ PODS:
   - boost (1.76.0)
   - DoubleConversion (1.1.6)
   - EdgeCenterVideoBufferHandler (1.0.0)
-  - EdgeCenterVideoCallsSDK (2.6.2)
+  - EdgeCenterVideoCallsSDK (2.6.3)
   - FBLazyVector (0.69.4)
   - FBReactNativeSpec (0.69.4):
     - RCT-Folly (= 2021.06.28.00-v2)
@@ -225,7 +225,7 @@ PODS:
     - glog
   - react-native-awesome-module (0.1.0):
     - EdgeCenterVideoBufferHandler
-    - EdgeCenterVideoCallsSDK (= 2.6.2)
+    - EdgeCenterVideoCallsSDK (= 2.6.3)
     - mediasoup_ios_client (= 1.5.3)
     - React-Core
   - react-native-safe-area-context (4.3.1):
@@ -340,7 +340,7 @@ DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EdgeCenterVideoBufferHandler
-  - EdgeCenterVideoCallsSDK (= 2.6.2)
+  - EdgeCenterVideoCallsSDK (= 2.6.3)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
@@ -470,7 +470,7 @@ SPEC CHECKSUMS:
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   EdgeCenterVideoBufferHandler: b84ed7bff8646f21100d8aae1564f6fe317eae3d
-  EdgeCenterVideoCallsSDK: fa2ae7a966629551930f91c227b9daf756c17607
+  EdgeCenterVideoCallsSDK: 05995f7a48de6f15cb63f1f5cfab5757b575ca43
   FBLazyVector: c71b8c429a8af2aff1013934a7152e9d9d0c937d
   FBReactNativeSpec: cb0df4f0084281b394f76bb9b4d1d9540f35963f
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
@@ -490,7 +490,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: a27badbbdbc0ff781813370736a2d1c7261181d4
   React-jsinspector: 8a3d3f5dcd23a91e8c80b1bf0e96902cd1dca999
   React-logger: 1088859f145b8f6dd0d3ed051a647ef0e3e80fad
-  react-native-awesome-module: aff13e6c40747904b87bee26163eac6021468f71
+  react-native-awesome-module: 94e6191e68ca52e9c54c9d23fec4d16c51506d93
   react-native-safe-area-context: 6c12e3859b6f27b25de4fee8201cfb858432d8de
   React-perflogger: cb386fd44c97ec7f8199c04c12b22066b0f2e1e0
   React-RCTActionSheet: f803a85e46cf5b4066c2ac5e122447f918e9c6e5
@@ -510,6 +510,6 @@ SPEC CHECKSUMS:
   RNSVG: ecd661f380a07ba690c9c5929c475a44f432d674
   Yoga: ff994563b2fd98c982ca58e8cd9db2cdaf4dda74
 
-PODFILE CHECKSUM: 485abdfc8c5f4c20921724d1a1d96c2c7e4b43c7
+PODFILE CHECKSUM: ea0f2ebc90a62b917a52d775035ece875e9b4197
 
 COCOAPODS: 1.11.3

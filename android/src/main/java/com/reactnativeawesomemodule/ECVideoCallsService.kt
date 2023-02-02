@@ -2,13 +2,12 @@ package com.reactnativeawesomemodule
 
 import android.app.Application
 import android.content.Context.CAMERA_SERVICE
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.hardware.Camera
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
-import android.util.SparseIntArray
-import android.view.Surface
+import android.hardware.camera2.CameraMetadata
+import android.provider.Settings
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
@@ -31,75 +30,26 @@ class ECVideoCallsService(
   reactContext: ReactApplicationContext,
   private val application: Application,
 ) : ReactContextBaseJavaModule(reactContext) {
-  private val ORIENTATIONS = SparseIntArray()
 
-  init {
-    ORIENTATIONS.append(Surface.ROTATION_0, 0)
-    ORIENTATIONS.append(Surface.ROTATION_90, 90)
-    ORIENTATIONS.append(Surface.ROTATION_180, 180)
-    ORIENTATIONS.append(Surface.ROTATION_270, 270)
-  }
-
-  /**
-   * Get the angle by which an image must be rotated given the device's current
-   * orientation.
-   */
-  @Throws(CameraAccessException::class)
-  private fun getRotationCompensation(cameraId: String): Int {
-    // Get the device's current rotation relative to its "native" orientation.
-    // Then, from the ORIENTATIONS table, look up the angle the image must be
-    // rotated to compensate for the device's rotation.
-    val deviceRotation = currentActivity?.windowManager?.defaultDisplay?.rotation
-
-    var rotationCompensation = ORIENTATIONS.get(deviceRotation ?: 0)
-
-    // Get the device's sensor orientation.
-    val cameraManager = application.getSystemService(CAMERA_SERVICE) as CameraManager
-    val sensorOrientation =
-      cameraManager.getCameraCharacteristics(cameraId).get(CameraCharacteristics.SENSOR_ORIENTATION)!!
-
-    val isFrontFacing = Utils.isFrontFacingCamera(cameraId)
-
-    rotationCompensation = if (isFrontFacing) {
-      (sensorOrientation + rotationCompensation) % 360
-    } else {
-      (sensorOrientation - rotationCompensation + 360) % 360
-    }
-
-    LLog.d(
-      "ECVideoCallsService",
-      "isFrontFacing $isFrontFacing " +
-        "\nsensorOrientation $sensorOrientation " +
-        "\ndeviceRotation $deviceRotation " +
-        "\nrotationCompensation $rotationCompensation"
-    )
-    return rotationCompensation
-  }
-
-  /**
-   * Get the angle by which an image must be rotated given the device's current
-   * orientation.
-   */
+  //  private val videoFrameSegmenter = VideoFrameSegmenter()
 
   private val frameConverter = VideoFrameConverter()
-  private val videoFrameFaceDetector = VideoFrameFaceDetector().also {
-    it.faceDetectingFrameInterval = 30
-  }
-//  private val videoFrameSegmenter = VideoFrameSegmenter()
+  private val orientationHelper = OrientationHelper(application)
+  private val videoFrameFaceDetector = VideoFrameFaceDetector(initialHasFace = false, faceDetectingFrameInterval = 30)
 
   private val videoFrameListener = object : VideoFrameListener {
 
-    private var bgBitmap: Bitmap? = null
+//    private var bgBitmap: Bitmap? = null
 
-    private fun checkAndCreateBgBitmap(width: Int, height: Int): Bitmap {
-      if (bgBitmap == null || bgBitmap!!.width != width || bgBitmap!!.height != height) {
-        bgBitmap = Bitmap.createScaledBitmap(
-          BitmapFactory.decodeResource(application.resources, R.drawable.bg), width, height, true
-        )
-      }
-
-      return bgBitmap!!
-    }
+//    private fun checkAndCreateBgBitmap(width: Int, height: Int): Bitmap {
+//      if (bgBitmap == null || bgBitmap!!.width != width || bgBitmap!!.height != height) {
+//        bgBitmap = Bitmap.createScaledBitmap(
+//          BitmapFactory.decodeResource(application.resources, R.drawable.bg), width, height, true
+//        )
+//      }
+//
+//      return bgBitmap!!
+//    }
 
 //    private fun applyBackground(frame: VideoFrame, sink: (frame: VideoFrame) -> Unit) {
 //      val inputImage = frameConverter.frameToInputImage(frame, 0)
@@ -119,16 +69,13 @@ class ECVideoCallsService(
 
     override fun onFrameCaptured(frame: VideoFrame, sink: (frame: VideoFrame) -> Unit) {
 
-      val getInputImage = getInputImage@{ ->
-        val cameraName = Utils.getCameraName()
-        val angle = cameraName?.let {
-          getRotationCompensation(it)
-        }
-
-        return@getInputImage frameConverter.frameToInputImage(frame, angle ?: 0)
+      val orientation = if (isAutoRotationEnabled()) {
+        frame.rotation
+      } else {
+        getRotationCompensation(Utils.getCameraId()!!)
       }
 
-      val hasFace = videoFrameFaceDetector.hasFace(getInputImage)
+      val hasFace = videoFrameFaceDetector.hasFace(frame, orientation)
 
       val outputFrame = if (hasFace) {
         frame
@@ -141,6 +88,8 @@ class ECVideoCallsService(
   }
 
   init {
+    orientationHelper.enable()
+
     runOnUiThread {
       ECSession.instance.init(application)
     }
@@ -213,6 +162,49 @@ class ECVideoCallsService(
 
   override fun getName(): String {
     return "ECVideoCallsService"
+  }
+
+  @Throws(CameraAccessException::class)
+  private fun getRotationCompensation(cameraId: Int): Int {
+    // Get the device's sensor orientation.
+    val cameraManager = application.getSystemService(CAMERA_SERVICE) as CameraManager
+
+    val characteristics = cameraManager.getCameraCharacteristics(cameraManager.cameraIdList[cameraId])
+
+    val sensorOrientation =
+      if (characteristics.get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL) == CameraMetadata.INFO_SUPPORTED_HARDWARE_LEVEL_LEGACY) {
+        // Camera1
+//        LLog.d("ECVideoCallsService", "getting sensorOrientation for Camera1")
+        val cameraInfo = Camera.CameraInfo()
+        Camera.getCameraInfo(cameraId, cameraInfo)
+        cameraInfo.orientation
+      } else {
+        // Camera2
+//        LLog.d("ECVideoCallsService", "getting sensorOrientation for Camera2")
+        characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION) ?: 0
+      }
+
+    val isFrontFacing = Utils.isFrontFacingCamera(cameraId)
+
+    val deviceOrientation = orientationHelper.getOrientation()
+
+    val rotationCompensation = if (!isFrontFacing) {
+      (sensorOrientation + deviceOrientation) % 360
+    } else {
+      (sensorOrientation - deviceOrientation + 360) % 360
+    }
+
+//    LLog.d(
+//      "ECVideoCallsService",
+//      "isFrontFacing $isFrontFacing \nsensorOrientation $sensorOrientation \ndeviceOrientation $deviceOrientation \nrotationCompensation $rotationCompensation"
+//    )
+    return rotationCompensation
+  }
+
+  private fun isAutoRotationEnabled(): Boolean {
+    return Settings.System.getInt(
+      application.contentResolver, Settings.System.ACCELEROMETER_ROTATION, 0
+    ) == 1
   }
 
 }

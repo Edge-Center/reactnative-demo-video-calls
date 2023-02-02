@@ -32,7 +32,7 @@ export const HomeScreen = ({
 
   useEffect(() => {
     initAudioVideoState();
-
+//     getStoragePermission();
     if (Platform.OS === 'android' && Platform.Version >= 31) {
       getAndroidBluetoothConnectPermission()
     }

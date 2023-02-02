@@ -20,6 +20,16 @@ export const getCameraPermission = async () => {
   }
 };
 
+export const getStoragePermission = async () => {
+  if (Platform.OS == 'ios') return false
+
+    return (
+      (await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      )) === PermissionsAndroid.RESULTS.GRANTED
+    );
+};
+
 export const getMicPermission = async () => {
   if (Platform.OS === 'ios') {
     return await NativeModules.ECVideoCallsPermissions.authorizeForAudio();

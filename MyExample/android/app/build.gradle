@@ -256,8 +256,8 @@ android {
 dependencies {
   implementation fileTree(dir: "libs", include: ["*.jar"])
 
-  implementation 'com.twilio:audioswitch:1.1.5'
-  implementation 'io.github.crow-misia.libmediasoup-android:libmediasoup-android:0.11.0'
+//   implementation 'com.twilio:audioswitch:1.1.5'
+//   implementation 'io.github.crow-misia.libmediasoup-android:libmediasoup-android:0.11.0'
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"  // From node_modules
 
