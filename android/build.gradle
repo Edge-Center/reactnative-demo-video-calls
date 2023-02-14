@@ -169,6 +169,8 @@ dependencies {
   implementation project(":SDK")
 
   implementation "androidx.lifecycle:lifecycle-extensions:$LIFECYCLE_VERSION"
+  implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$LIFECYCLE_KTX_VERSION"
+
   implementation "com.google.dagger:dagger:$DAGGER_VERSION"
 
   kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"

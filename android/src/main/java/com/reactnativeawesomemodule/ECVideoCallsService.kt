@@ -16,7 +16,6 @@ import com.facebook.react.bridge.UiThreadUtil.runOnUiThread
 import org.webrtc.VideoFrame
 import world.edgecenter.videocalls.ECSession
 import world.edgecenter.videocalls.localuser.LocalUserInfo
-import world.edgecenter.videocalls.logger.LLog
 import world.edgecenter.videocalls.model.DEFAULT_LENGTH_RANDOM_STRING
 import world.edgecenter.videocalls.model.UserRole
 import world.edgecenter.videocalls.network.client.VideoFrameListener
@@ -91,42 +90,42 @@ class ECVideoCallsService(
     orientationHelper.enable()
 
     runOnUiThread {
-      ECSession.instance.init(application)
+      ECSession.init(application)
     }
 
-    ECSession.instance.videoFrameListener = videoFrameListener
+    ECSession.videoFrameListener = videoFrameListener
   }
 
   @ReactMethod
   fun closeConnection() {
     runOnUiThread {
-      ECSession.instance.close()
+      ECSession.close()
     }
   }
 
   @ReactMethod
   fun disableAudio() {
-    ECSession.instance.localUser?.toggleMic(false)
+    ECSession.localUser?.toggleMic(false)
   }
 
   @ReactMethod
   fun disableVideo() {
-    ECSession.instance.localUser?.toggleCam(false)
+    ECSession.localUser?.toggleCam(false)
   }
 
   @ReactMethod
   fun enableAudio() {
-    ECSession.instance.localUser?.toggleMic(true)
+    ECSession.localUser?.toggleMic(true)
   }
 
   @ReactMethod
   fun enableVideo() {
-    ECSession.instance.localUser?.toggleCam(true)
+    ECSession.localUser?.toggleCam(true)
   }
 
   @ReactMethod
   fun flipCamera() {
-    ECSession.instance.localUser?.flipCam()
+    ECSession.localUser?.flipCam()
   }
 
   @ReactMethod
@@ -143,7 +142,7 @@ class ECVideoCallsService(
       val userInfo = LocalUserInfo(
         displayName = options.getString("displayName") ?: "User${Utils.getRandomString(3)}",
         role = userRole,
-        userId = options.getString("userId") ?: Utils.getRandomString(DEFAULT_LENGTH_RANDOM_STRING)
+        id = options.getString("userId") ?: Utils.getRandomString(DEFAULT_LENGTH_RANDOM_STRING)
       )
 
       val roomParams = RoomParams(
@@ -155,8 +154,8 @@ class ECVideoCallsService(
         // apiEvent = "https://my.backend/webhook"
       )
 
-      ECSession.instance.setConnectionParams(userInfo, roomParams)
-      ECSession.instance.connect()
+      ECSession.setConnectionParams(userInfo, roomParams)
+      ECSession.connect()
     }
   }
 
