@@ -1,5 +1,8 @@
 package com.reactnativeawesomemodule
 
+import android.graphics.Outline
+import android.view.View
+import android.view.ViewOutlineProvider
 import androidx.lifecycle.Observer
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.UiThreadUtil
@@ -8,12 +11,12 @@ import com.facebook.react.uimanager.ThemedReactContext
 import world.edgecenter.videocalls.ECSession
 import world.edgecenter.videocalls.logger.LLog
 import world.edgecenter.videocalls.remoteuser.RemoteUsers
-import world.edgecenter.videocalls.ui.view.remoteuser.RemoteUserVideoViewRenderer
+import world.edgecenter.videocalls.ui.view.remoteuser.RemoteVideoSurfaceView
 
 class ECRemoteViewManager(var mCallerContext: ReactApplicationContext) :
-  SimpleViewManager<RemoteUserVideoViewRenderer>() {
+  SimpleViewManager<RemoteVideoSurfaceView>() {
 
-  private var viewInstance: RemoteUserVideoViewRenderer? = null
+  private var viewInstance: RemoteVideoSurfaceView? = null
   private var viewUserId: String? = null
 
   private val remoteUsersObserver = Observer { remoteUsers: RemoteUsers ->
@@ -26,13 +29,15 @@ class ECRemoteViewManager(var mCallerContext: ReactApplicationContext) :
     }
   }
 
-  override fun createViewInstance(reactContext: ThemedReactContext): RemoteUserVideoViewRenderer {
+  override fun createViewInstance(reactContext: ThemedReactContext): RemoteVideoSurfaceView {
     LLog.d("ReactRemoteViewManager", "createViewInstance")
     UiThreadUtil.runOnUiThread {
       ECSession.roomState.remoteUsers.observeForever(remoteUsersObserver)
     }
 
-    viewInstance = RemoteUserVideoViewRenderer(reactContext.baseContext)
+    viewInstance = RemoteVideoSurfaceView(reactContext.baseContext)
+    viewInstance!!.setBorderRadius(30f)
+
     tryConnectView()
 
     return viewInstance!!
@@ -42,7 +47,7 @@ class ECRemoteViewManager(var mCallerContext: ReactApplicationContext) :
     return "ECRemoteView"
   }
 
-  override fun onDropViewInstance(view: RemoteUserVideoViewRenderer) {
+  override fun onDropViewInstance(view: RemoteVideoSurfaceView) {
     LLog.d("ReactRemoteViewManager", "onDropViewInstance")
     viewInstance = null
 
