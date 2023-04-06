@@ -16,7 +16,9 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,m,mm,swift}"
 
   s.dependency "React-Core"
-  s.dependency "EdgeCenterVideoCallsSDK", "2.6.3"
-  s.dependency "EdgeCenterVideoBufferHandler"
+#   s.dependency "EdgeCenterVideoCallsSDK"
+#   s.dependency "Mediasoup-Client-Swift", "0.1.3"
+
+  s.dependency "EdgeCenterVideoCallsSDK", "2.7.1"
   s.dependency "mediasoup_ios_client", "1.5.3"
 end

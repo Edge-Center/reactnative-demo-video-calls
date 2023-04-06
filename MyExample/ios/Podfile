@@ -15,9 +15,9 @@ target 'MyExample' do
 
   pod 'react-native-awesome-module', :path => '../..'
 
-  pod 'EdgeCenterVideoCallsSDK', '2.6.3'
+#   pod 'EdgeCenterVideoCallsSDK', :podspec => "../../EdgeCenterVideoCallsSDK.podspec"
 
-  pod 'EdgeCenterVideoBufferHandler'
+   pod 'EdgeCenterVideoCallsSDK', '2.7.1'
 
   use_react_native!(
     :path => config[:reactNativePath],
