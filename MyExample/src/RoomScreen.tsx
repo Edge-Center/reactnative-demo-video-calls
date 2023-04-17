@@ -12,7 +12,7 @@ import type {RootStackParamList} from './types';
 import {getCameraPermission, getMicPermission} from './helpers';
 
 const screen = Dimensions.get('screen');
-const aspectRatio = 4 / 3;
+const aspectRatio = 3 / 4;
 // const height = screen.height > screen.width ? screen.height - 80 : screen.width - 80;
 const height = screen.height - 80;
 const width = height * aspectRatio; // * screen.scale;
