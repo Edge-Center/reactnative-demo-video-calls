@@ -47,12 +47,12 @@ class ECVideoCallsService: RCTEventEmitter {
 
         let roomParams = ECRoomParams(
             id: options["roomId"] as! String,
+            host: options["clientHostName"] as! String,
             isWebinar: true,
             startWithCam: options["isVideoOn"] as! Bool,
             startWithMic: options["isAudioOn"] as! Bool
             // apiEvent: "https://my.domen/webhook"
         )
-           // host: options["clientHostName"] as? String)
 
         client.connectionParams = (localUserParams, roomParams)
 
@@ -137,7 +137,7 @@ class ECVideoCallsService: RCTEventEmitter {
 
 extension ECVideoCallsService: MediaCapturerBufferDelegate {
  func mediaCapturerDidBuffer(_ pixelBuffer: CVPixelBuffer) {
-   bufferHandler.proccessBuffer(pixelBuffer)
+   bufferHandler.processBuffer(pixelBuffer)
  }
 }
 
@@ -154,15 +154,37 @@ extension ECVideoCallsService: ECRoomListener {
         videoOutput.alwaysDiscardsLateVideoFrames = true
     }
 
-    func roomClientHandle(error: ECRoomError) {
-        if case .fatalError(let error) = error {
-          switch error {
-          case HTTPUpgradeError.notAnUpgrade(502):
-            try? client.startConnection()
-          default: break
-          }
+    func roomClientHandle(error: ECError) {
+        switch error {
+            case .roomError(let roomError):
+                switch roomError {
+                    case .wrongAccessToken,
+                            .nonExistingToken,
+                            .accessDenied,
+                            .wrongRoomId,
+                            .peerAlreadyEntered,
+                            .accessRoomReject,
+                            .eventNotStartedYet,
+                            .callWithSameRoomIdExist,
+                            .webinarWithSameRoomIdExist,
+                            .connectionError,
+                            .mismatchRoomId:
+                        print(roomError.message)
+                    default:
+                        print(roomError.message)
+                        
+                }
+                print("ERROR: \(roomError.message)")
+                
+            case .serverError(let serverError):
+                print(serverError.message)
+                client.close()
+            case .unknown:
+                print("Неизвестная ошибка")
+            @unknown default:
+                print("FAIL ERROR")
         }
-      }
+    }
 
     func roomClientHandle(_ client: ECRoomClient, forAllRoles joinData: ECJoinData) {
         switch joinData {

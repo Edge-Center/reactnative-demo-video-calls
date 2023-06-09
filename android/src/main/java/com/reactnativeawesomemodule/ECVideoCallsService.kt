@@ -132,16 +132,9 @@ class ECVideoCallsService(
   fun openConnection(options: ReadableMap) {
     runOnUiThread {
 
-      val userRole = when (options.getString("role") ?: "") {
-        "common" -> UserRole.COMMON
-        "moderator" -> UserRole.MODERATOR
-        "participant" -> UserRole.PARTICIPANT
-        else -> UserRole.UNKNOWN
-      }
-
       val userInfo = LocalUserInfo(
         displayName = options.getString("displayName") ?: "User${Utils.getRandomString(3)}",
-        role = userRole,
+        isParticipant = true,
         id = options.getString("userId") ?: Utils.getRandomString(DEFAULT_LENGTH_RANDOM_STRING)
       )
 
@@ -172,14 +165,10 @@ class ECVideoCallsService(
 
     val sensorOrientation =
       if (characteristics.get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL) == CameraMetadata.INFO_SUPPORTED_HARDWARE_LEVEL_LEGACY) {
-        // Camera1
-//        LLog.d("ECVideoCallsService", "getting sensorOrientation for Camera1")
         val cameraInfo = Camera.CameraInfo()
         Camera.getCameraInfo(cameraId, cameraInfo)
         cameraInfo.orientation
       } else {
-        // Camera2
-//        LLog.d("ECVideoCallsService", "getting sensorOrientation for Camera2")
         characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION) ?: 0
       }
 
@@ -193,10 +182,6 @@ class ECVideoCallsService(
       (sensorOrientation - deviceOrientation + 360) % 360
     }
 
-//    LLog.d(
-//      "ECVideoCallsService",
-//      "isFrontFacing $isFrontFacing \nsensorOrientation $sensorOrientation \ndeviceOrientation $deviceOrientation \nrotationCompensation $rotationCompensation"
-//    )
     return rotationCompensation
   }
 

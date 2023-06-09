@@ -14,17 +14,4 @@
     RCT_EXTERN_METHOD(enableBlur)
     RCT_EXTERN_METHOD(disableBlur)
 
-  // RCT_EXTERN_METHOD(getCount: (RCTResponseSenderBlock)callback)
-  /**
-  @objc
-  func decrement(
-    _ resolve: RCTPromiseResolveBlock,
-    rejecter reject: RCTPromiseRejectBlock
-  ) -> Void
-
-  RCT_EXTERN_METHOD(
-  decrement: (RCTPromiseResolveBlock)resolve
-  rejecter: (RCTPromiseRejectBlock)reject
-)
-  **/
 @end

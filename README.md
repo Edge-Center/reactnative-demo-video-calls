@@ -213,15 +213,12 @@ Join user to room function from our example application:
 
         let roomParams = ECRoomParams(
             id: options["roomId"] as! String,
-            host: options["clientHostName"] as? String)
+            host: options["clientHostName"] as? String,
+            isWebinar: true,
+            startWithCam: options["isVideoOn"] as! Bool,
+            startWithMic: options["isAudioOn"] as! Bool)
 
         client.connectionParams = (localUserParams, roomParams)
-
-        joinOptions = ConnectionOptions(
-            isVideoOn: options["isVideoOn"] as! Bool,
-            isAudioOn: options["isAudioOn"] as! Bool,
-            blurSigma: options["blurSigma"] as! Double
-        )
 
         try? client.startConnection()
         client.audioSessionActivate()

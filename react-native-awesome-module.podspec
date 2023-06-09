@@ -17,7 +17,8 @@ Pod::Spec.new do |s|
 
   s.dependency "React-Core"
 
-  s.dependency "EdgeCenterVideoCallsSDK", "2.8.0"
-  s.dependency "Mediasoup-Client-Swift", "0.3.0"
+  s.dependency "EdgeCenterVideoCallsSDK", "0.0.126"
+#   s.dependency "Socket.IO-Client-Swift", "16.0.1"
+#   s.dependency "Mediasoup-Client-Swift", "0.3.0"
 
 end

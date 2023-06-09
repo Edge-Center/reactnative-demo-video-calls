@@ -7,7 +7,14 @@ We want this community to be friendly and respectful to each other. Please follo
 To get started with the project, run `yarn` in the root directory to install the required dependencies for each package:
 
 ```sh
-yarn
+ cd myExample
+ yarn install
+ # ios:
+ rbenv install 3.1.2
+ rbenv shell 3.1.2
+ sudo gem install cocoapods
+ cd ios
+ pod install
 ```
 
 > While it's possible to use [`npm`](https://github.com/npm/cli), the tooling is built around [`yarn`](https://classic.yarnpkg.com/), so you'll have an easier time if you use `yarn` for development.

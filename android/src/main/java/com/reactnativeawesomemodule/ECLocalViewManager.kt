@@ -1,33 +1,25 @@
 package com.reactnativeawesomemodule
 
-import android.graphics.Outline
 import android.util.Log
-import android.view.View
-import android.view.ViewOutlineProvider
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
-import world.edgecenter.videocalls.ui.view.me.LocalVideoSurfaceView
-
+import world.edgecenter.videocalls.ui.view.me.LocalVideoView
 
 class ECLocalViewManager(var mCallerContext: ReactApplicationContext) :
-  SimpleViewManager<LocalVideoSurfaceView>() {
+  SimpleViewManager<LocalVideoView>() {
 
   override fun getName(): String {
     return "ECLocalView"
   }
 
-  override fun onDropViewInstance(view: LocalVideoSurfaceView) {
+  override fun onDropViewInstance(view: LocalVideoView) {
     super.onDropViewInstance(view)
   }
 
 
-  override fun createViewInstance(reactContext: ThemedReactContext): LocalVideoSurfaceView {
+  override fun createViewInstance(reactContext: ThemedReactContext): LocalVideoView {
     Log.d("Local", "createViewInstance")
-    val view = LocalVideoSurfaceView(reactContext.baseContext)
-
-    view.setBorderRadius(30f)
-
-    return view
+    return LocalVideoView(reactContext.baseContext)
   }
 }
