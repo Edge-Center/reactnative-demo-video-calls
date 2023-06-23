@@ -25,8 +25,8 @@ export const HomeScreen = ({
 }: NativeStackScreenProps<RootStackParamList, 'Home'>) => {
   const [clientHostName, onChangeClientHostName] =
     useState('vconf.edgecenter.ru');
-  const [roomId, onChangeText] = useState('serv0ReactNativeDemoAppTesting');
-  const [displayName, onChangeDisplayName] = useState('From React Native');
+  const [roomId, onChangeText] = useState('serv1rntest');
+  const [displayName, onChangeDisplayName] = useState(`${Platform.OS} from RN`);
   const [isAudioOn, onChangeAudio] = useState(false);
   const [isVideoOn, onChangeVideo] = useState(false);
 

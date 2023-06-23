@@ -3,7 +3,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 source 'https://github.com/Edge-Center/ios-video-calls-SDK.git'
 
-platform :ios, '14'
+platform :ios, '14.0'
 install! 'cocoapods', :deterministic_uuids => false
 
 target 'MyExample' do
@@ -14,7 +14,7 @@ target 'MyExample' do
 
   pod 'react-native-awesome-module', :path => '../..'
 
-  pod 'EdgeCenterVideoCallsSDK', '2.8.0'
+  pod 'EdgeCenterVideoCallsSDK', '2.8.0.1'
 
   pod 'Mediasoup-Client-Swift', :git => 'https://github.com/VLprojects/mediasoup-client-swift'
 

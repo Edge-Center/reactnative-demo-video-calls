@@ -132,16 +132,9 @@ class ECVideoCallsService(
   fun openConnection(options: ReadableMap) {
     runOnUiThread {
 
-      val userRole = when (options.getString("role") ?: "") {
-        "common" -> UserRole.COMMON
-        "moderator" -> UserRole.MODERATOR
-        "participant" -> UserRole.PARTICIPANT
-        else -> UserRole.UNKNOWN
-      }
-
       val userInfo = LocalUserInfo(
         displayName = options.getString("displayName") ?: "User${Utils.getRandomString(3)}",
-        role = userRole,
+        role = UserRole.COMMON(),
         id = options.getString("userId") ?: Utils.getRandomString(DEFAULT_LENGTH_RANDOM_STRING)
       )
 
@@ -150,7 +143,7 @@ class ECVideoCallsService(
         hostName = options.getString("clientHostName") ?: "",
         startWithCam = options.getBoolean("isVideoOn"),
         startWithMic = options.getBoolean("isAudioOn"),
-        isWebinar = true,
+        // isWebinar = true,
         // apiEvent = "https://my.backend/webhook"
       )
 

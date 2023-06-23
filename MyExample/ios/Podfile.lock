@@ -1,7 +1,7 @@
 PODS:
   - boost (1.76.0)
   - DoubleConversion (1.1.6)
-  - EdgeCenterVideoCallsSDK (2.8.0.39)
+  - EdgeCenterVideoCallsSDK (2.8.0.1)
   - FBLazyVector (0.69.4)
   - FBReactNativeSpec (0.69.4):
     - RCT-Folly (= 2021.06.28.00-v2)
@@ -223,7 +223,7 @@ PODS:
   - React-logger (0.69.4):
     - glog
   - react-native-awesome-module (0.1.0):
-    - EdgeCenterVideoCallsSDK (= 2.8.0.39)
+    - EdgeCenterVideoCallsSDK (= 2.8.0.1)
     - Mediasoup-Client-Swift (= 0.3.0)
     - React-Core
   - react-native-safe-area-context (4.3.1):
@@ -337,7 +337,7 @@ PODS:
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
-  - EdgeCenterVideoCallsSDK (= 2.8.0.39)
+  - EdgeCenterVideoCallsSDK (= 2.8.0.1)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
@@ -471,7 +471,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
-  EdgeCenterVideoCallsSDK: 09365f62df4e1e167524cda328816f41997b42f6
+  EdgeCenterVideoCallsSDK: 564a804949de54874d26c911a6baaa6240ecdad3
   FBLazyVector: c71b8c429a8af2aff1013934a7152e9d9d0c937d
   FBReactNativeSpec: cb0df4f0084281b394f76bb9b4d1d9540f35963f
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
@@ -491,7 +491,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: a27badbbdbc0ff781813370736a2d1c7261181d4
   React-jsinspector: 8a3d3f5dcd23a91e8c80b1bf0e96902cd1dca999
   React-logger: 1088859f145b8f6dd0d3ed051a647ef0e3e80fad
-  react-native-awesome-module: 7c2da64e455685089536ec1fc07bdc153c6cfb23
+  react-native-awesome-module: 44b2671da1f897bdf931a4ee52e5ac4f43f06f83
   react-native-safe-area-context: 6c12e3859b6f27b25de4fee8201cfb858432d8de
   React-perflogger: cb386fd44c97ec7f8199c04c12b22066b0f2e1e0
   React-RCTActionSheet: f803a85e46cf5b4066c2ac5e122447f918e9c6e5
@@ -511,6 +511,6 @@ SPEC CHECKSUMS:
   RNSVG: ecd661f380a07ba690c9c5929c475a44f432d674
   Yoga: ff994563b2fd98c982ca58e8cd9db2cdaf4dda74
 
-PODFILE CHECKSUM: 340836f93039c16fa3b30a65058bbbe93f8f162b
+PODFILE CHECKSUM: 9d9f71aef47397474aa8f337da77d6b9c9a1626d
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.12.1

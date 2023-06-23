@@ -29,30 +29,18 @@ class ECVideoCallsService: RCTEventEmitter {
 
         client.cameraParams = ECCameraParams(cameraPosition: .front)
 
-        var userRole: ECUserRole
-        if let role = options["role"] {
-            switch role as! String {
-            case "common": userRole = .common
-            case "moderator": userRole = .moderator
-            case "participant": userRole = .participant
-            default: userRole = .unknown
-          }
-        } else {
-            userRole = .unknown
-        }
-
         let localUserParams = ECLocalUserParams(
             name: options["displayName"] as! String,
-            role: userRole)
+            role: ECUserRole.common)
 
         let roomParams = ECRoomParams(
             id: options["roomId"] as! String,
-            isWebinar: true,
+            host: options["clientHostName"] as? String,
+            // isWebinar: true,
             startWithCam: options["isVideoOn"] as! Bool,
             startWithMic: options["isAudioOn"] as! Bool
             // apiEvent: "https://my.domen/webhook"
         )
-           // host: options["clientHostName"] as? String)
 
         client.connectionParams = (localUserParams, roomParams)
 
