@@ -14,9 +14,9 @@ target 'MyExample' do
 
   pod 'react-native-awesome-module', :path => '../..'
 
-  pod 'EdgeCenterVideoCallsSDK', '2.8.0.1'
+  pod 'Mediasoup-Client-Swift', '0.4.1'
 
-  pod 'Mediasoup-Client-Swift', :git => 'https://github.com/VLprojects/mediasoup-client-swift'
+  pod 'EdgeCenterVideoCallsSDK', '2.8.8'
 
   use_react_native!(
     :path => config[:reactNativePath],

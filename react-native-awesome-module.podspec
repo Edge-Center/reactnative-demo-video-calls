@@ -14,10 +14,12 @@ Pod::Spec.new do |s|
   s.source       = { :git => "http://google.com.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
+  s.swift_version = '5.0'
 
   s.dependency "React-Core"
 
-  s.dependency "EdgeCenterVideoCallsSDK", "2.8.0.1"
-  s.dependency "Mediasoup-Client-Swift", "0.3.0"
+  s.dependency "EdgeCenterVideoCallsSDK", "2.8.8"
+  s.dependency "Mediasoup-Client-Swift", "0.4.1"
+
 
 end

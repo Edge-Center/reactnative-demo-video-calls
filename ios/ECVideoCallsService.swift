@@ -30,12 +30,11 @@ class ECVideoCallsService: RCTEventEmitter {
         client.cameraParams = ECCameraParams(cameraPosition: .front)
 
         let localUserParams = ECLocalUserParams(
-            name: options["displayName"] as! String,
-            role: ECUserRole.common)
+            name: options["displayName"] as! String, isParticipant: true)
 
         let roomParams = ECRoomParams(
             id: options["roomId"] as! String,
-            host: options["clientHostName"] as? String,
+            host: options["clientHostName"] as! String,
             // isWebinar: true,
             startWithCam: options["isVideoOn"] as! Bool,
             startWithMic: options["isAudioOn"] as! Bool
@@ -125,7 +124,7 @@ class ECVideoCallsService: RCTEventEmitter {
 
 extension ECVideoCallsService: MediaCapturerBufferDelegate {
  func mediaCapturerDidBuffer(_ pixelBuffer: CVPixelBuffer) {
-   bufferHandler.proccessBuffer(pixelBuffer)
+   bufferHandler.processBuffer(pixelBuffer)
  }
 }
 
@@ -142,14 +141,14 @@ extension ECVideoCallsService: ECRoomListener {
         videoOutput.alwaysDiscardsLateVideoFrames = true
     }
 
-    func roomClientHandle(error: ECRoomError) {
-        if case .fatalError(let error) = error {
-          switch error {
-          case HTTPUpgradeError.notAnUpgrade(502):
-            try? client.startConnection()
-          default: break
-          }
-        }
+    func roomClientHandle(error: ECError) {
+//        if case .fatalError(let error) = error {
+//          switch error {
+//          case HTTPUpgradeError.notAnUpgrade(502):
+//            try? client.startConnection()
+//          default: break
+//          }
+//        }
       }
 
     func roomClientHandle(_ client: ECRoomClient, forAllRoles joinData: ECJoinData) {
